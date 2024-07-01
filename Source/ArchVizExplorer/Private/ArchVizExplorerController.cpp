@@ -180,7 +180,7 @@ void AArchVizExplorerController::OnRoadLocationYChanged(float InLocation) {
 		FVector OldLocation = ProceduralRoadActor->GetActorLocation();
 		if (OldLocation.Y != InLocation) {
 			OldLocation.Y = InLocation;
-			ProceduralRoadActor->SetActorLocation(OldLocation)
+			ProceduralRoadActor->SetActorLocation(OldLocation);
 		}
 	}
 }
