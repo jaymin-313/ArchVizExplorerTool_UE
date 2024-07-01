@@ -5,7 +5,12 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "CustomInteriorActor.generated.h"
-
+UENUM()
+enum class ECustomInteriorType : uint8 {
+	WallInterior,
+	FloorInterior,
+	RoofInterior,
+};
 UCLASS()
 class ARCHVIZEXPLORER_API ACustomInteriorActor : public AActor
 {
@@ -18,13 +23,17 @@ public:
 	UStaticMesh* InteriorStaticMesh;
 	UStaticMesh* GetStaticMesh();
 	void SetStaticMesh(UStaticMesh* StaticMesh);
+	void SetInteriorType(FString InInteriorType);
+	FString GetInteriorType();
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "Interior")
+	UStaticMeshComponent* InteriorMeshComponent;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "Interior")
-	UStaticMeshComponent* InteriorMeshComponent;
+	UPROPERTY()
+	TEnumAsByte<ECustomInteriorType> InteriorType;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
 };

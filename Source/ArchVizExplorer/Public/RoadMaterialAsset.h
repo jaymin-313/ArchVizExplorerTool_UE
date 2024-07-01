@@ -49,6 +49,18 @@ struct FBuildingTypeData {
 	UStaticMesh* BuildingTypeReference;
 
 };
+
+USTRUCT(BlueprintType)
+struct FDoorMeshTypeData {
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Door")
+	FString DoorTypeName;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Door")
+	UTexture2D* DoorTypeImage;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Door")
+	UStaticMesh* DoorTypeReference;
+};
 USTRUCT(BlueprintType)
 struct FInteriorData {
 	GENERATED_BODY()
@@ -98,6 +110,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Materials")
 	TArray<FBuildingTypeData> BuildingTypes;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Materials")
+	TArray<FDoorMeshTypeData> DoorTypes;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Materials")
 	TArray<FBuildingMaterialData> BuildingMaterials;

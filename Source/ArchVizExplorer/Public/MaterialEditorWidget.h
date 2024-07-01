@@ -24,4 +24,7 @@ public:
 
     UPROPERTY(meta = (BindWidget))
     UScrollBoxWidget* BuildingMaterialBox;
+
+    UPROPERTY(meta = (BindWidget))
+    UScrollBoxWidget* DoorMeshTypes;
 };

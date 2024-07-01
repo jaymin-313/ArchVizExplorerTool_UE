@@ -19,12 +19,41 @@ void ACustomBuildingActor::SetStaticMesh(UStaticMesh* StaticMesh)
 	}
 }
 
+UStaticMesh* ACustomBuildingActor::GetStaticMesh()
+{
+	if (BuildingMeshComponent) {
+		return BuildingMeshComponent->GetStaticMesh();
+	}
+	return nullptr;
+}
+
+void ACustomBuildingActor::SetMeshXScale(int32 Number)
+{
+	FVector OldScale = BuildingMeshComponent->GetRelativeScale3D();
+	OldScale.X = Number;
+	BuildingMeshComponent->SetRelativeScale3D(OldScale);
+	//GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, TEXT("Scale Set"));
+}
+void ACustomBuildingActor::SetMeshYScale(int32 Number)
+{
+	FVector OldScale = BuildingMeshComponent->GetRelativeScale3D();
+	OldScale.Y = Number;
+	BuildingMeshComponent->SetRelativeScale3D(OldScale);
+	//GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, TEXT("Scale Set"));
+}
 void ACustomBuildingActor::SetMeshScale(int32 Number)
 {
 	FVector OldScale = BuildingMeshComponent->GetRelativeScale3D();
 	OldScale.X = Number;
 	BuildingMeshComponent->SetRelativeScale3D(OldScale);
-	GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, TEXT("Scale Set"));
+	//GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, TEXT("Scale Set"));
+}
+
+int32 ACustomBuildingActor::GetMeshScale()
+{
+	FVector OldScale = BuildingMeshComponent->GetRelativeScale3D();
+	int32 Number = OldScale.X;
+	return Number;
 }
 
 void ACustomBuildingActor::SetActorType(ECustomBuildingType InBuildType)
@@ -38,10 +67,11 @@ void ACustomBuildingActor::SetType(FString InString) {
 	}
 	else if(InString.Equals( FString{ "Roof" })) {
 		BuildType = ECustomBuildingType::Roof;
-	}else if(InString.Equals( FString{ "Floor" })) {
+	}
+	else if(InString.Equals( FString{ "Floor" })) {
 		BuildType = ECustomBuildingType::Floor;
 	}
-	else {
+	else if (InString.Equals(FString{ "Door" })){
 		BuildType = ECustomBuildingType::Door;
 	}
 }
@@ -53,6 +83,22 @@ void ACustomBuildingActor::SetMaterial(UMaterialInterface* InMaterial)
 
 	
 	
+}
+//void ACustomBuildingActor::SetFloorDetails(int32 CurrentFloor)
+//{
+//	BuildingFloorDetails = CurrentFloor;
+//}
+//
+//int32 ACustomBuildingActor::GetFloorDetails()
+//{
+//	return BuildingFloorDetails;
+//}
+UMaterialInterface* ACustomBuildingActor::GetMaterial()
+{
+	if (BuildingMeshComponent) {
+		return BuildingMeshComponent->GetMaterial(0);
+	}
+	return nullptr;
 }
 
 FString ACustomBuildingActor::GetActorType()

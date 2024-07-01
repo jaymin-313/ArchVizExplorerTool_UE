@@ -7,6 +7,8 @@
 #include "ScrollBoxWidget.h"
 #include <Components/Button.h>
 #include <Components/SpinBox.h>
+#include <Components/GridPanel.h>  
+#include <Components/Border.h>  
 #include "InteriorEditorWidget.generated.h"
 
 /**
@@ -26,6 +28,8 @@ public:
 	void OnInteriorLocationXChanged(float InValue);
 	UFUNCTION()
 	void OnInteriorLocationYChanged(float InValue);
+	UFUNCTION()
+	void OnInteriorLocationZChanged(float InValue);
 
 	UPROPERTY(meta = (BindWidget))
 	UScrollBoxWidget* InteriorScrollBox;
@@ -40,6 +44,12 @@ public:
 	UButton* DestroyInterior;
 
 	UPROPERTY(meta = (BindWidget))
+	UBorder* LocationBorder;
+	
+	UPROPERTY(meta = (BindWidget))
+	UGridPanel* LocationGridPanel;
+
+	UPROPERTY(meta = (BindWidget))
 	UButton* RotateInterior;
 
 	UPROPERTY(meta = (BindWidget))
@@ -47,4 +57,13 @@ public:
 	
 	UPROPERTY(meta = (BindWidget))
 	USpinBox * InteriorLocationY;
+	
+	UPROPERTY(meta = (BindWidget))
+	USpinBox * InteriorLocationZ;
+
+	void SetPlayerController(class AArchVizExplorerController* InController);
+
+private:
+	UPROPERTY()
+	class AArchVizExplorerController* PlayerController;
 };

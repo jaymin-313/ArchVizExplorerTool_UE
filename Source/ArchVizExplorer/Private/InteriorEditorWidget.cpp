@@ -17,43 +17,49 @@ void UInteriorEditorWidget::NativeConstruct()
 	if (InteriorLocationY) {
 		InteriorLocationY->OnValueChanged.AddDynamic(this, &UInteriorEditorWidget::OnInteriorLocationYChanged);
 	}
+	if (InteriorLocationY) {
+		InteriorLocationZ->OnValueChanged.AddDynamic(this, &UInteriorEditorWidget::OnInteriorLocationZChanged);
+	}
 	if (RotateInterior) {
 		RotateInterior->OnClicked.AddDynamic(this, &UInteriorEditorWidget::OnRotateInterior);
-
 	}
 }
 
 void UInteriorEditorWidget::OnDestroyInterior()
 {
 
-	AArchVizExplorerController* PlayerController = Cast<AArchVizExplorerController>(UGameplayStatics::GetPlayerController(this, 0));
 	if (PlayerController) {
 		PlayerController->OnDestroyInterior();
-		
 	}
 	
 }
 void UInteriorEditorWidget::OnRotateInterior() {
-	AArchVizExplorerController* PlayerController = Cast<AArchVizExplorerController>(UGameplayStatics::GetPlayerController(this, 0));
 	if (PlayerController) {
 		PlayerController->OnRotateInterior();
-
 	}
 }
 void UInteriorEditorWidget::OnInteriorLocationXChanged(float InValue)
 {
-	AArchVizExplorerController* PlayerController = Cast<AArchVizExplorerController>(UGameplayStatics::GetPlayerController(this, 0));
 	if (PlayerController) {
 		PlayerController->OnInteriorLocationXChanged(InValue);
-
 	}
 }
 
 void UInteriorEditorWidget::OnInteriorLocationYChanged(float InValue)
 {
-	AArchVizExplorerController* PlayerController = Cast<AArchVizExplorerController>(UGameplayStatics::GetPlayerController(this, 0));
 	if (PlayerController) {
 		PlayerController->OnInteriorLocationYChanged(InValue);
-
 	}
+}
+
+void UInteriorEditorWidget::OnInteriorLocationZChanged(float InValue)
+{
+	if (PlayerController) {
+		PlayerController->OnInteriorLocationZChanged(InValue);
+	}
+}
+
+void UInteriorEditorWidget::SetPlayerController(AArchVizExplorerController* InController)
+{
+	PlayerController = InController;
 }

@@ -17,6 +17,8 @@ DECLARE_DELEGATE_OneParam(FOnInteriorTypeSelected, const FInteriorData&)
 DECLARE_DELEGATE_OneParam(FOnWallInteriorTypeSelected, const FWallInteriorData&)
 DECLARE_DELEGATE_OneParam(FOnCeilingInteriorTypeSelected, const FCeilingInteriorData&)
 DECLARE_DELEGATE_OneParam(FOnBuildingMaterialSelected, const FBuildingMaterialData&)
+DECLARE_DELEGATE_OneParam(FOnDoorMeshTypeSelected, const FDoorMeshTypeData&)
+
 UENUM()
 enum class EAssetType {
 	Road,
@@ -24,7 +26,8 @@ enum class EAssetType {
 	Interior,
 	BuildingMaterial,
 	WallInterior,
-	CeilingInterior
+	CeilingInterior,
+	DoorMesh
 };
 class ARCHVIZEXPLORER_API SSelectionScrollBoxWidget : public SCompoundWidget
 {
@@ -44,9 +47,11 @@ public:
 	FOnWallInteriorTypeSelected OnWallInteriorTypeSelected;
 	FOnCeilingInteriorTypeSelected OnCeilingInteriorTypeSelected;
 	FOnBuildingMaterialSelected OnBuildingMaterialSelected;
+	FOnDoorMeshTypeSelected OnDoorMeshTypeSelected;
 private:
 	void RefreshRoadMaterialThumbnails();
 	void RefreshBuildingTypeThumbnails();
+	void RefreshDoorMeshThumbnails();
 	void RefreshInteriorTypeThumbnails();
 	void RefreshWallInteriorTypeThumbnails();
 	void RefreshCeilingInteriorTypeThumbnails();

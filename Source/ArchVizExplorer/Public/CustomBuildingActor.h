@@ -24,16 +24,22 @@ public:
 	UStaticMesh* CustomStaticMesh;
 
 	void SetStaticMesh(UStaticMesh* StaticMesh);
+	UStaticMesh* GetStaticMesh();
+	void SetMeshXScale(int32 Number);
+	void SetMeshYScale(int32 Number);
 	void SetMeshScale(int32 Number);
+	int32 GetMeshScale();
 	void SetActorType(ECustomBuildingType BuildType);
 	void SetType(FString InString);
 	void SetMaterial(UMaterialInterface* InMaterial);
+	UMaterialInterface* GetMaterial();
 	FString GetActorType();
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Building")
+	UStaticMeshComponent* BuildingMeshComponent;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "Building")
-	UStaticMeshComponent* BuildingMeshComponent;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

@@ -18,6 +18,8 @@
 #include "MaterialEditorWidget.h"
 #include "BuildingEditorWidget.h"
 #include "InteriorEditorWidget.h"
+#include "ArchVizSaveGame.h"
+#include "TimerManager.h"
 #include "ArchVizExplorerController.generated.h"
 
 /**
@@ -33,12 +35,23 @@ public:
 	void ApplyMaterial(const FMaterialData& MaterialData);
 	void SelectType(const FBuildingTypeData& BuildingData);
 	bool CheckCollisionAtLocation(const FVector& Location, const FVector& ActorExtent, const TArray<FString>& IgnoredActorTypes, ACustomBuildingActor* ActorToIgnore = nullptr);
+	bool IsInteriorOnBuildingActor(const FVector& Location, const FVector& ActorExtent, const TArray<FString>& IgnoredActorTypes, ACustomBuildingActor* ActorToIgnore);
+	ACustomBuildingActor* GetCustomBuildingActor(const FVector& Location, const FVector& ActorExtent);
+	bool CheckInteriorCollision(const FVector& Location, const FVector& ActorExtent, ACustomInteriorActor* ActorToIgnore);
 	void PlaceInterior(const FInteriorData& InteriorData);
 	void PlaceWallInterior(const FWallInteriorData& WallInteriorData);
 	void PlaceCeilingInterior(const FCeilingInteriorData& CeilingInteriorData);
 	void OnInteriorLocationXChanged(float InValue);
 	void OnInteriorLocationYChanged(float InValue);
-	bool IsValidInteriorPlacement(FVector Location, FVector ActorExtent);
+	void OnInteriorLocationZChanged(float InValue);
+	void OnSaveGameClicked();
+	void OnLoadGameClicked();
+	void SaveGame(FString InName);
+	void LoadGame(FString InName);
+	void ClearSaveGameData();
+
+	void RetrieveFilenamesFromDirectory(const FString& DirectoryPath, TArray<FString>& OutFilenames);
+
 	FVector InteriorHitLocation;
 	virtual void SetupInputComponent() override;
 
@@ -72,24 +85,35 @@ public:
 
 	UPROPERTY()
 	class UInputAction* I_LeftClickAction;
-
+	
+	UPROPERTY()
+	class UInputAction* SaveTemplateAction;
+	
+	UPROPERTY()
+	class UInputAction* LoadTemplateAction;
+	
 	
 	void OnRoadWidthChanged(float Width);
 	void OnRoadLocationXChanged(float InLocation);
 	void OnRoadLocationYChanged(float InLocation);
+	void ShowGuide();
 	void OnModeChanged(FString InSelectedItem);
+	void ShowMessage(FString Message);
+	void HideInstructionText();
 	void ClearViewportWidgets();
 	void OnDestroyRoad();
 	void OnDestroyInterior();
 	void OnRotateInterior();
 	void OnDestroyCustomBuidling();
 	void SetNumberOfSegments(int32 Number);
+	void SetNumberOfColumns(int32 Number);
+	void SetNumberOfRows(int32 Number);
 	void SnapActor(float SnapValue);
 	void DestroyUnplacedActor();
 	void I_LeftMouseClick();
 	FVector GetActorExtentFromMesh(UStaticMesh* Mesh) const;
-	//void PlaceDoor(const FVector& HitLocation);
-
+	void FirstFloorSelected();
+	void GroundFloorSelected();
 protected:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "UI")
 	TSubclassOf<UUserWidget> ArchVizWidgetClass;
@@ -126,8 +150,10 @@ protected:
 	void OnLeftMouseClick();
 	void M_LeftMouseClick();
 	void ApplyBuildingMaterial(const FBuildingMaterialData& BuildingMaterialData);
+	void ChangeDoorMesh(const FDoorMeshTypeData& DoorData);
 	void B_LeftMouseClick();
 	void B_RightMouseClick();
+	
 	void SpawnCustomBuildingActor();
 	void RotateCustomBuilding();
 	int32 NumberOfSegments;
@@ -135,8 +161,12 @@ protected:
 	 FVector SecondPoint;
 	 bool bIsFirstPointSelected;
 	 bool bIsBuildingMappingContext = false;
-	 bool bMove;
-	 bool bIsPlaced = false;
+	 bool bMove = true;
+	 bool bIsPlaced = true;
+	 bool bGuideVisible = false;
+
+	 UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Road")
+	 TSubclassOf<AProcRoadActor> ProcRoadClass;
 
 	 UPROPERTY()
 	 AProcRoadActor* ProceduralRoadActor;
@@ -150,6 +180,14 @@ protected:
 	 TSubclassOf<ACustomInteriorActor> CustomInteriorClass;
 	 UPROPERTY()
 	 ACustomInteriorActor* CustomInteriorInstance;
+
+	 FTimerHandle TimeHandle;
+
  private:
 
+	 //First Floor
+	 float i  = 0.0f;
+	 int32 CurrentFloor{};
+	 UPROPERTY()
+	 TArray<FString> BuildingNames;
 };

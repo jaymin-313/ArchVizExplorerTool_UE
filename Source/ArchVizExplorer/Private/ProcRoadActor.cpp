@@ -10,6 +10,10 @@ AProcRoadActor::AProcRoadActor()
 	PrimaryActorTick.bCanEverTick = true;
 	ProceduralMesh = CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("GeneratedMesh"));
 	RootComponent = ProceduralMesh;
+
+    Length = 100.0f;
+    Width = 100.0f;
+    Height = 100.0f;
 }
 
 // Called when the game starts or when spawned
@@ -25,8 +29,12 @@ void AProcRoadActor::Tick(float DeltaTime)
 
 }
 
-void AProcRoadActor::GenerateRoadMesh(float Length,float Width,float Height)
+void AProcRoadActor::GenerateRoadMesh(float InLength,float InWidth,float InHeight)
 {
+
+    Length = InLength;
+    Width = InWidth;
+    Height = InHeight;
     TArray<FVector> Vertices;
     TArray<int32> Triangles;
     TArray<FVector> Normals;
@@ -78,7 +86,41 @@ void AProcRoadActor::GenerateRoadMesh(float Length,float Width,float Height)
     ProceduralMesh->SetMaterial(0, RoadMaterial);
 }
 
+UProceduralMeshComponent* AProcRoadActor::GetProceduralMeshComponent()
+{
+    if (ProceduralMesh) {
+        return ProceduralMesh;
+    }
+    return nullptr;
+}
+
+void AProcRoadActor::SetProceduralMeshComponent(UProceduralMeshComponent* ProcComponent)
+{
+    if (ProcComponent) {
+        ProceduralMesh = ProcComponent;
+    }
+}
+
+UMaterialInterface* AProcRoadActor::GetMaterial()
+{
+    if (ProceduralMesh) {
+        return ProceduralMesh->GetMaterial(0);
+    }
+    return nullptr;
+}
+
 void AProcRoadActor::SetMaterial(UMaterialInterface* UMI)
 {
     ProceduralMesh->SetMaterial(0, UMI);
+}
+
+float AProcRoadActor::GetLength()
+{
+    return Length;
+}float AProcRoadActor::GetWidth()
+{
+    return Width;
+}float AProcRoadActor::GetHeight()
+{
+    return Height;
 }

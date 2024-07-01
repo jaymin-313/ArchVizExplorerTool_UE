@@ -8,7 +8,7 @@ BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 void SSelectionScrollBoxWidget::Construct(const FArguments& InArgs)
 {
 	FSlateBrush* BackgroundBrush = new FSlateBrush();
-	BackgroundBrush->TintColor = FLinearColor(0.117647f, 0.505882f, 0.690196f, 1.0f); // Set your desired background color
+	BackgroundBrush->TintColor = FLinearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	ScrollBox = SNew(SScrollBox).Orientation(EOrientation::Orient_Horizontal);
 
 
@@ -45,6 +45,8 @@ void SSelectionScrollBoxWidget::Construct(const FArguments& InArgs)
 		RefreshWallInteriorTypeThumbnails();
 	else if (MeshType == EAssetType::CeilingInterior)
 		RefreshCeilingInteriorTypeThumbnails();
+	else if (MeshType == EAssetType::DoorMesh)
+		RefreshDoorMeshThumbnails();
 	
 }
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
@@ -98,6 +100,41 @@ void SSelectionScrollBoxWidget::RefreshBuildingTypeThumbnails()
 			TSharedPtr<SImage> ThumbnailImage = SNew(SImage).Image(ThumbnailBrush).Cursor(EMouseCursor::Hand).OnMouseButtonDown_Lambda([this, BuildingData](const FGeometry& Geometry, const FPointerEvent& MouseEvent) {
 				if (MouseEvent.GetEffectingButton() == EKeys::LeftMouseButton) {
 					OnBuildingTypeSelected.ExecuteIfBound(BuildingData);
+					return FReply::Handled();
+				}
+				return FReply::Unhandled();
+				});
+
+			VerticalBox->AddSlot()[
+				ThumbnailImage.ToSharedRef()
+			];
+			VerticalBox->AddSlot().HAlign(EHorizontalAlignment::HAlign_Center).AutoHeight()
+				[
+					TextBlock.ToSharedRef()
+				];
+
+			ScrollBox->AddSlot().VAlign(EVerticalAlignment::VAlign_Center)
+				[
+					VerticalBox.ToSharedRef()
+				];
+		}
+	}
+}
+
+void SSelectionScrollBoxWidget::RefreshDoorMeshThumbnails()
+{
+	ScrollBox->ClearChildren();
+	if (MeshAsset.IsValid()) {
+		for (const auto& DoorData : MeshAsset->DoorTypes) {
+			TSharedPtr<SVerticalBox> VerticalBox = SNew(SVerticalBox);
+			FSlateBrush* ThumbnailBrush = new FSlateBrush();
+			ThumbnailBrush->SetResourceObject(DoorData.DoorTypeImage);
+			ThumbnailBrush->SetImageSize(FVector2D(150));
+			TSharedPtr<STextBlock> TextBlock = SNew(STextBlock).ColorAndOpacity(FColor::Blue).Font(FSlateFontInfo(FPaths::EngineContentDir() / TEXT("Slate/Fonts/Roboto-Bold.ttf"), 20));
+			TextBlock->SetText(FText::FromString(DoorData.DoorTypeName));
+			TSharedPtr<SImage> ThumbnailImage = SNew(SImage).Image(ThumbnailBrush).Cursor(EMouseCursor::Hand).OnMouseButtonDown_Lambda([this, DoorData](const FGeometry& Geometry, const FPointerEvent& MouseEvent) {
+				if (MouseEvent.GetEffectingButton() == EKeys::LeftMouseButton) {
+					OnDoorMeshTypeSelected.ExecuteIfBound(DoorData);
 					return FReply::Handled();
 				}
 				return FReply::Unhandled();
@@ -275,6 +312,8 @@ FText SSelectionScrollBoxWidget::GetAssetTypeName() const
 		return FText::FromString(TEXT("Wall Interiors")); // Adjust the string as needed
 	case EAssetType::CeilingInterior:
 		return FText::FromString(TEXT("Ceiling Interiors")); // Adjust the string as needed
+	case EAssetType::DoorMesh:
+		return FText::FromString(TEXT("Door Types")); // Adjust the string as needed
 	default:
 		return FText::FromString(TEXT("Unknown")); // Default case for unknown types
 	}

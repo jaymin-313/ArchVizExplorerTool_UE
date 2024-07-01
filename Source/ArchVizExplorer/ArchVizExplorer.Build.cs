@@ -8,7 +8,7 @@ public class ArchVizExplorer : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore","SlateCore","EnhancedInput","ProceduralMeshComponent","UMG"});
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore","SlateCore","EnhancedInput","ProceduralMeshComponent","UMG","Json","JsonUtilities"});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

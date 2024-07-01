@@ -14,26 +14,44 @@ void UBuildingEditorWidget::NativeConstruct()
 	if (DestroyComponent) {
 		DestroyComponent->OnClicked.AddDynamic(this, &UBuildingEditorWidget::OnDestroyClicked);
 	}
+	if (NumOfColumns) {
+		NumOfColumns->OnValueChanged.AddDynamic(this, &UBuildingEditorWidget::OnNumOfColumnsChanged);
+	}
+	if (NumOfRows) {
+		NumOfRows->OnValueChanged.AddDynamic(this, &UBuildingEditorWidget::OnNumOfRowsChanged);
+	}
 }
 
 void UBuildingEditorWidget::OnNumSegmentsChanged(float Number)
 {
-	AArchVizExplorerController* Controller = Cast<AArchVizExplorerController>(UGameplayStatics::GetPlayerController(this, 0));
-	if (Controller)
+	if (PlayerController)
 	{
-		Controller->SetNumberOfSegments(static_cast<int32>(Number));
-		GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, TEXT("Sclae"));
-	}
-	else {
-		GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, TEXT("No Controller"));
-
+		PlayerController->SetNumberOfSegments(static_cast<int32>(Number));
 	}
 }
 
 void UBuildingEditorWidget::OnDestroyClicked() {
-	AArchVizExplorerController* Controller = Cast<AArchVizExplorerController>(UGameplayStatics::GetPlayerController(this, 0));
-	if (Controller)
+	if (PlayerController)
 	{
-		Controller->OnDestroyCustomBuidling();
+		PlayerController->OnDestroyCustomBuidling();
 	}
+}
+
+void UBuildingEditorWidget::OnNumOfColumnsChanged(float InValue) {
+	if (PlayerController)
+	{
+		PlayerController->SetNumberOfColumns(static_cast<int32>(InValue));
+	}
+}
+
+void UBuildingEditorWidget::OnNumOfRowsChanged(float InValue) {
+	if (PlayerController)
+	{
+		PlayerController->SetNumberOfRows(static_cast<int32>(InValue));
+	}
+}
+
+void UBuildingEditorWidget::SetPlayerController(AArchVizExplorerController* InController)
+{
+	PlayerController = InController;
 }

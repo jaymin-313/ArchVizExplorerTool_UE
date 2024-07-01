@@ -8,6 +8,7 @@ TSharedRef<SWidget> UScrollBoxWidget::RebuildWidget()
 	MyRoadSelectionScrollBox = SNew(SSelectionScrollBoxWidget).InMeshAsset(MeshAssetManger).InMeshType(AssetType);
 	MyRoadSelectionScrollBox->OnRoadMaterialSelected.BindUObject(this, &UScrollBoxWidget::HandleMaterialSelection);
 	MyRoadSelectionScrollBox->OnBuildingTypeSelected.BindUObject(this, &UScrollBoxWidget::HandleBuildingTypeSelection);
+	MyRoadSelectionScrollBox->OnDoorMeshTypeSelected.BindUObject(this, &UScrollBoxWidget::HandleDoorTypeSelection);
 	MyRoadSelectionScrollBox->OnInteriorTypeSelected.BindUObject(this, &UScrollBoxWidget::HandleInteriorTypeSelection);
 	MyRoadSelectionScrollBox->OnWallInteriorTypeSelected.BindUObject(this, &UScrollBoxWidget::HandleWallInteriorTypeSelection);
 	MyRoadSelectionScrollBox->OnCeilingInteriorTypeSelected.BindUObject(this, &UScrollBoxWidget::HandleCeilingInteriorTypeSelection);
@@ -26,6 +27,10 @@ void UScrollBoxWidget::HandleBuildingMaterialSelection(const FBuildingMaterialDa
 void UScrollBoxWidget::HandleBuildingTypeSelection(const FBuildingTypeData& BuildingData)
 {
 	BuildingSelected.ExecuteIfBound(BuildingData);
+}
+void UScrollBoxWidget::HandleDoorTypeSelection(const FDoorMeshTypeData& DoorData)
+{
+	DoorSelected.ExecuteIfBound(DoorData);
 }
 void UScrollBoxWidget::HandleInteriorTypeSelection(const FInteriorData& InteriorData)
 {

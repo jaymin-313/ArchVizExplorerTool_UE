@@ -7,6 +7,8 @@
 #include "ScrollBoxWidget.h"
 #include "Components/Button.h"
 #include <Components/SpinBox.h>
+#include <Components/Border.h>
+#include <Components/HorizontalBox.h>
 #include "BuildingEditorWidget.generated.h"
 
 /**
@@ -22,12 +24,37 @@ public:
 	void OnNumSegmentsChanged(float Number);
 	UFUNCTION()
 	void OnDestroyClicked();
+	UFUNCTION()
+	void OnNumOfColumnsChanged(float InValue);
+	UFUNCTION()
+	void OnNumOfRowsChanged(float InValue);
+
+
 	UPROPERTY(meta = (BindWidget))
 	UScrollBoxWidget* BuildingScrollBox;
+
+	UPROPERTY(meta = (BindWidget))
+	UHorizontalBox* SegmentBox;
+	UPROPERTY(meta = (BindWidget))
+	UBorder* SegmentsBorder;
 
 	UPROPERTY(meta = (BindWidget))
 	USpinBox* NumOfSegments;
 
 	UPROPERTY(meta = (BindWidget))
+	UBorder* TwoDimensionBorder;
+
+	UPROPERTY(meta = (BindWidget))
+	USpinBox* NumOfColumns;
+	
+	UPROPERTY(meta = (BindWidget))
+	USpinBox* NumOfRows;
+
+	UPROPERTY(meta = (BindWidget))
 	UButton* DestroyComponent;
+
+	void SetPlayerController(class AArchVizExplorerController* InController);
+private:
+	UPROPERTY()
+	class AArchVizExplorerController* PlayerController;
 };

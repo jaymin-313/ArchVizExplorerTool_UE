@@ -16,6 +16,7 @@ DECLARE_DELEGATE_OneParam(FOnInteriorSelected, const FInteriorData&)
 DECLARE_DELEGATE_OneParam(FOnWallInteriorSelected, const FWallInteriorData&)
 DECLARE_DELEGATE_OneParam(FOnCeilingInteriorSelected, const FCeilingInteriorData&)
 DECLARE_DELEGATE_OneParam(FOnBuildingMaterialSelected, const FBuildingMaterialData&)
+DECLARE_DELEGATE_OneParam(FOnDoorSelected, const FDoorMeshTypeData&)
 
 UCLASS()
 class ARCHVIZEXPLORER_API UScrollBoxWidget : public UWidget
@@ -26,6 +27,7 @@ public:
 
 	void HandleMaterialSelection(const FMaterialData& MaterialData);
 	void HandleBuildingTypeSelection(const FBuildingTypeData& BuildingData);
+	void HandleDoorTypeSelection(const FDoorMeshTypeData& DoorData);
 	void HandleInteriorTypeSelection(const FInteriorData& InteriorData);
 	void HandleWallInteriorTypeSelection(const FWallInteriorData& WallInteriorData);
 	void HandleCeilingInteriorTypeSelection(const FCeilingInteriorData& CeilingInteriorData);
@@ -44,6 +46,7 @@ public:
 	FOnWallInteriorSelected WallInteriorSelected;
 	FOnCeilingInteriorSelected CeilingInteriorSelected;
 	FOnBuildingMaterialSelected BuildingMaterialSelected;
+	FOnDoorSelected DoorSelected;
 private:
 	TSharedPtr<SSelectionScrollBoxWidget> MyRoadSelectionScrollBox;
 };
